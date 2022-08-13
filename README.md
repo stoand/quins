@@ -9,7 +9,7 @@
 
 ## What are "Quins"?
 
-`Quins` are items in a list that together form a database
+`Quins`, or quintuplets, are items in a list that together form a database
 of queryable data.
 
 The five items of a quintuplet item:
