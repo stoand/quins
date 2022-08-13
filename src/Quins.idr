@@ -24,10 +24,10 @@ handleReq req res = do
     prim__handleReq req res
 
 startServerJs : String
-startServerJs = "javascript:lambda:(port, reqHandler) => {" ++
+startServerJs = "javascript:lambda:(port, requestHandler) => {" ++
         "let http = require('http');" ++
         -- NOTE: there is an extra empty pair of parathesis
-        "let server = http.createServer((req,res) => reqHandler(req)(res)());" ++
+        "let server = http.createServer((req,res) => requestHandler(req)(res)());" ++
         "server.listen(port);" ++
     "}"
 
@@ -49,17 +49,17 @@ prim__endRes : AnyPtr -> String -> PrimIO ()
 endRes : AnyPtr -> String -> IO ()
 endRes ptr str = fromPrim $ prim__endRes ptr str
 
-multiHandler : AnyPtr -> AnyPtr -> IO ()
-multiHandler request response = do
+requestHandler : AnyPtr -> AnyPtr -> IO ()
+requestHandler request response = do
     url_str <- getReqUrl request
     putStrLn url_str
 
     endRes response "bybye"
 
-prim__multiHandler : AnyPtr -> AnyPtr -> PrimIO ()
-prim__multiHandler req res = toPrim $ multiHandler req res
+prim__requestHandler : AnyPtr -> AnyPtr -> PrimIO ()
+prim__requestHandler req res = toPrim $ requestHandler req res
 
 runQuins : (port : Int) -> IO ()
 runQuins port = do
     -- startServer port handleReq
-    startServer port prim__multiHandler
+    startServer port prim__requestHandler
