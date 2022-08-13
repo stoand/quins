@@ -20,4 +20,4 @@ The five items of a quintuplet item:
 * `TX` - transaction
 * `A/R` - add or remove
 
-(See also: A Datomic Database [https://docs.datomic.com/cloud/time/filters.html#example-database])
+See also: A Datomic Database [https://docs.datomic.com/cloud/time/filters.html#example-database]
