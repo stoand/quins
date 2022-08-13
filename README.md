@@ -3,6 +3,10 @@
 ## So see Quins running in a real functional app:
 
 * [Install Idris2](https://github.com/idris-lang/Idris2)
+* [Install NodeJS](https://nodejs.org/en/download/)
+* `npm i -g nodemon`
+
+
 * `cd ./examples/forum/`
 * `./dev.sh`
 * Open `http://localhost:5555` to open browser (on Ubuntu)

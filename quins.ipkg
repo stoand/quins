@@ -1,0 +1,7 @@
+package quins
+version = 0.0.1
+
+modules =
+    Quins
+
+sourcedir = "src"
