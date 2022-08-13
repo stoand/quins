@@ -2,38 +2,34 @@ module Main
 
 import public PrimIO
 
-%foreign "javascript:lambda: (x) => x(22)"
-prim__ok : (Double -> Double) -> PrimIO Double
+ReqHandler : Type
+ReqHandler = AnyPtr -> AnyPtr -> PrimIO ()
 
-ok : Double -> IO Double
-ok d = primIO $ prim__ok (\x => x + 2)
+handleReqJs : String
+handleReqJs = "(req, res) => {" ++
+    "res.end(55555)" ++
+    "" ++
+    "}"
 
+%foreign handleReqJs
+prim__handleReq : ReqHandler
 
-%foreign "javascript:lambda: () => document.body.innerText = 'asdf'"
-prim__setBodyText : PrimIO ()
+handleReq : AnyPtr -> AnyPtr -> IO ()
+handleReq request response = primIO $ prim__handleReq request response
 
-setBodyText : IO ()
-setBodyText = primIO $ prim__setBodyText
+startServerJs : String
+startServerJs = "javascript:lambda:(port, reqHandler) => {" ++
+        "let http = require('http');" ++
+        "let server = http.createServer(reqHandler);" ++
+        "server.listen(port);" ++
+    "}" 
 
-%foreign "javascript:lambda: x => window.x = x"
-prim_setGlobalX : Double -> PrimIO ()
+%foreign startServerJs
+prim__startServer : Int -> ReqHandler -> PrimIO ()
 
-setGlobalX : Double -> IO ()
-setGlobalX x = primIO $ prim_setGlobalX x
-
-%foreign "javascript:lambda: () => window.x"
-prim_getGlobalX : () -> PrimIO Double
-
-getGlobalX : IO Double
-getGlobalX = primIO $ prim_getGlobalX ()
+startServer : Int -> ReqHandler -> IO ()
+startServer port setup_fn = primIO $ prim__startServer port setup_fn
 
 runQuins : IO ()
 runQuins = do
-
-    setGlobalX 11
-
-    x <- getGlobalX
-    
-    printLn $ "global X = " ++ show x
-    
-    setBodyText
+    startServer 5000 ?todo_handler
