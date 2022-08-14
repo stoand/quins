@@ -2,7 +2,7 @@ package quins-forum-frontend
 version = 0.0.1
 
 modules =
-    Forumfrontend
+    ForumFrontend
 
 opts = "--cg javascript -p quins-frontend"
 sourcedir = "src"
