@@ -7,8 +7,8 @@ import public Data.List1
 -- Lower level HTTP
 
 HTML_INDEX : String
-HTML_INDEX = "<html><head><title>Quins App</title><script src='quins-forum-frontend.js'></script></head>" ++
-    "<body><div id='quins-app-root'></div></body></html>"
+HTML_INDEX = "<html><head><title>Quins App</title></head>" ++
+    "<body><div id='quins-app-root'></div><script src='quins-forum-frontend.js'></script></body></html>"
 
 RawReqHandler : Type
 RawReqHandler = AnyPtr -> AnyPtr -> PrimIO ()
