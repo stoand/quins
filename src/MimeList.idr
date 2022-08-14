@@ -93,7 +93,7 @@ mimeDefault = "text/plain"
 public export
 mimeForPath : String -> String
 mimeForPath path =
-    case find (\(ext,mime) => isSuffixOf ext path) mimes of
+    case find (\(ext,mime) => isSuffixOf ("." ++ ext) path) mimes of
         Just (_, mime) => mime
         Nothing => mimeDefault
 
