@@ -1,7 +1,7 @@
-package quins
+package quins-backend
 version = 0.0.1
 
 modules =
-    Quins
+    QuinsBackend
 
 sourcedir = "src"

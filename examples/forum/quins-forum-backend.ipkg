@@ -1,0 +1,10 @@
+package quins-forum-backend
+version = 0.0.1
+
+modules =
+    ForumBackend
+
+opts = "--cg javascript -p quins-backend"
+sourcedir = "src"
+main = ForumBackend
+executable = "quins-forum-backend.js"

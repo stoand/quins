@@ -1,4 +1,4 @@
-module Main
+module QuinsBackend
 
 import public PrimIO
 import public Data.String
@@ -66,7 +66,11 @@ prim__endRes : AnyPtr -> (responseCode : Int) -> (mimeType : String) -> (body : 
 endRes : AnyPtr -> (responseCode : Int) -> (mimeType : String) -> (body : String) -> IO ()
 endRes ptr response_code mime_type body = fromPrim $ prim__endRes ptr response_code mime_type body
 
-%foreign "javascript:lambda: (path) => { console.log(__dirname, path);  try { return require('fs').readFileSync(path, 'utf8') } catch(_err) { return 'FILE_NOT_FOUND'; } }"
+nodeReadFileJs : String
+nodeReadFileJs = "javascript:lambda: (path) => { console.log(__dirname, path); " ++
+    "try { return require('fs').readFileSync(path, 'utf8') } catch(_err) { return 'FILE_NOT_FOUND'; } }"
+
+%foreign nodeReadFileJs
 prim__nodeReadFile : String -> PrimIO String
 
 nodeReadFile : String -> IO String
@@ -78,7 +82,7 @@ route res ["", "frontend.js"] = do
     contents <- nodeReadFile FRONTEND_PATH
     if contents == "FILE_NOT_FOUND" then
         endRes res 404 "text/plain" "" else endRes res 200 "text/javascript" contents
-route res _ = endRes res 404 "text/plain" "Invalid Path"
+route res _ = endRes res 404 "text/plain" ""
 
 requestHandler : AnyPtr -> AnyPtr -> IO ()
 requestHandler request response = do
@@ -89,6 +93,8 @@ requestHandler request response = do
 prim__requestHandler : AnyPtr -> AnyPtr -> PrimIO ()
 prim__requestHandler req res = toPrim $ requestHandler req res
 
+
+public export
 runQuins : (port : Int) -> IO ()
 runQuins port = do
     startServer port prim__requestHandler

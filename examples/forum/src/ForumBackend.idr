@@ -1,6 +1,6 @@
-module Main
+module ForumBackend
 
-import public Quins
+import public QuinsBackend
 
 PORT : Int
 PORT = 5000
