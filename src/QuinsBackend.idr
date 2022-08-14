@@ -13,22 +13,6 @@ HTML_INDEX = "<html><head><title>Quins App</title></head>" ++
 RawReqHandler : Type
 RawReqHandler = AnyPtr -> AnyPtr -> PrimIO ()
 
-handleReqJs : String
-handleReqJs = "javascript:lambda:(req, res) => {" ++
-    "res.end('55555');" ++
-    "" ++
-    "}"
-
-%foreign handleReqJs
-prim__handleReq : RawReqHandler
-
-%foreign "javascript:lambda: (a,b) => {console.log(234) }"
-prim__print : AnyPtr -> AnyPtr -> PrimIO ()
-
-handleReq : RawReqHandler
-handleReq req res = do
-    prim__handleReq req res
-
 startServerJs : String
 startServerJs = "javascript:lambda:(port, requestHandler) => {" ++
         "let http = require('http');" ++
