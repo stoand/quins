@@ -8,6 +8,9 @@ setRootHtml html = fromPrim $ prim__setRootHtml html
 
 dom : String
 dom = """
+
+<link rel='stylesheet' href='styles.css'>
+
 <div>asdf</div>
 
 <form>

@@ -59,8 +59,9 @@ nodeReadFile path = fromPrim $ prim__nodeReadFile path
 
 route : AnyPtr -> List String -> IO ()
 route res ["", ""] = endRes res 200 "text/html" HTML_INDEX
-route res ["", "quins-forum-frontend.js"] = do
-    contents <- nodeReadFile "quins-forum-frontend.js"
+-- NOTE: supports only a single file name; no additional folders
+route res ["", static_file] = do
+    contents <- nodeReadFile static_file
     if contents == "FILE_NOT_FOUND" then
         endRes res 404 "text/plain" "frontend file not found" else endRes res 200 "text/javascript" contents
 route res _ = endRes res 404 "text/plain" "invalid path"
