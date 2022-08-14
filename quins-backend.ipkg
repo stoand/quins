@@ -2,6 +2,7 @@ package quins-backend
 version = 0.0.1
 
 modules =
-    QuinsBackend
+    QuinsBackend,
+    MimeList
 
 sourcedir = "src"

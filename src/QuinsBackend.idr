@@ -1,8 +1,9 @@
 module QuinsBackend
 
-import public PrimIO
-import public Data.String
-import public Data.List1
+import PrimIO
+import Data.String
+import Data.List1
+import MimeList
 
 -- Lower level HTTP
 
@@ -63,8 +64,8 @@ route res ["", ""] = endRes res 200 "text/html" HTML_INDEX
 route res ["", static_file] = do
     contents <- nodeReadFile static_file
     if contents == "FILE_NOT_FOUND" then
-        endRes res 404 "text/plain" "frontend file not found" else endRes res 200 "text/javascript" contents
-route res _ = endRes res 404 "text/plain" "invalid path"
+        endRes res 404 "text/plain" "singular file not found" else endRes res 200 (mimeForPath static_file) contents
+route res _ = endRes res 404 "text/plain" "paths containing folders are invalid - only singular files are allowed"
 
 requestHandler : AnyPtr -> AnyPtr -> IO ()
 requestHandler request response = do
