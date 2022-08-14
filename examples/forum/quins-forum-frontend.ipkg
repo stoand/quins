@@ -1,0 +1,10 @@
+package quins-forum-frontend
+version = 0.0.1
+
+modules =
+    Forumfrontend
+
+opts = "--cg javascript -p quins-frontend"
+sourcedir = "src"
+main = ForumFrontend
+executable = "quins-forum-frontend.js"

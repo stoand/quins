@@ -1,0 +1,7 @@
+package quins-frontend
+version = 0.0.1
+
+modules =
+    QuinsFrontend
+
+sourcedir = "src"
