@@ -9,7 +9,7 @@
 
 * `cd ./examples/forum/`
 * `./dev.sh`
-* Open `http://localhost:5555`
+* Open `http://localhost:5000`
 
 ## What are "Quins"?
 
