@@ -1,6 +1,6 @@
 # Quins -- Idris2 Fullstack Framework
 
-## So see Quins running in a real functional app:
+## To see Quins running in a real functional app:
 
 * [Install Idris2](https://github.com/idris-lang/Idris2)
 * [Install NodeJS](https://nodejs.org/en/download/)
