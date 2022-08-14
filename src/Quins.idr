@@ -53,25 +53,32 @@ prim__getReqUrl : AnyPtr -> PrimIO String
 getReqUrl : AnyPtr -> IO String
 getReqUrl ptr = fromPrim $ prim__getReqUrl ptr
 
-%foreign "javascript:lambda: (res,str) => res.end(str)"
-prim__endRes : AnyPtr -> String -> PrimIO ()
+endResJs : String
+endResJs = "javascript:lambda: (res,code,mime,str) => {" ++
+    "res.writeHead(code, {'Content-Type': mime});" ++
+    "res.end(str);" ++
+    "" ++
+    "}"
+    
+%foreign endResJs
+prim__endRes : AnyPtr -> (responseCode : Int) -> (mimeType : String) -> (body : String) -> PrimIO ()
 
-endRes : AnyPtr -> String -> IO ()
-endRes ptr str = fromPrim $ prim__endRes ptr str
+endRes : AnyPtr -> (responseCode : Int) -> (mimeType : String) -> (body : String) -> IO ()
+endRes ptr response_code mime_type body = fromPrim $ prim__endRes ptr response_code mime_type body
 
-
-%foreign "javascript:lambda: (path) => { console.log(__dirname, path);  try { return require('fs').readFileSync(path, 'utf8') } catch(_err) { return 'file not found'; } }"
+%foreign "javascript:lambda: (path) => { console.log(__dirname, path);  try { return require('fs').readFileSync(path, 'utf8') } catch(_err) { return 'FILE_NOT_FOUND'; } }"
 prim__nodeReadFile : String -> PrimIO String
 
 nodeReadFile : String -> IO String
 nodeReadFile path = fromPrim $ prim__nodeReadFile path
 
 route : AnyPtr -> List String -> IO ()
-route res ["", ""] = endRes res HTML_INDEX
+route res ["", ""] = endRes res 200 "text/html" HTML_INDEX
 route res ["", "frontend.js"] = do
     contents <- nodeReadFile FRONTEND_PATH
-    endRes res contents
-route res _ = endRes res "nothing"
+    if contents == "FILE_NOT_FOUND" then
+        endRes res 404 "text/plain" "" else endRes res 200 "text/javascript" contents
+route res _ = endRes res 404 "text/plain" "Invalid Path"
 
 requestHandler : AnyPtr -> AnyPtr -> IO ()
 requestHandler request response = do
