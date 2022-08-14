@@ -7,12 +7,8 @@ import public Data.List1
 -- Lower level HTTP
 
 HTML_INDEX : String
-HTML_INDEX = "<html><head><title>Quins App</title><script src='/frontend.js'></script></head>" ++
+HTML_INDEX = "<html><head><title>Quins App</title><script src='quins-forum-frontend.js'></script></head>" ++
     "<body><div id='quins-app-root'></div></body></html>"
-
-FRONTEND_PATH : String
-FRONTEND_PATH = "./frontend.js"
-
 
 RawReqHandler : Type
 RawReqHandler = AnyPtr -> AnyPtr -> PrimIO ()
@@ -67,8 +63,9 @@ endRes : AnyPtr -> (responseCode : Int) -> (mimeType : String) -> (body : String
 endRes ptr response_code mime_type body = fromPrim $ prim__endRes ptr response_code mime_type body
 
 nodeReadFileJs : String
-nodeReadFileJs = "javascript:lambda: (path) => { console.log(__dirname, path); " ++
-    "try { return require('fs').readFileSync(path, 'utf8') } catch(_err) { return 'FILE_NOT_FOUND'; } }"
+nodeReadFileJs = "javascript:lambda: (path) => {" ++
+    "let fullPath = require('path').join(__dirname, path);" ++
+    "try { return require('fs').readFileSync(fullPath, 'utf8') } catch(_err) { return 'FILE_NOT_FOUND'; } }"
 
 %foreign nodeReadFileJs
 prim__nodeReadFile : String -> PrimIO String
@@ -78,11 +75,11 @@ nodeReadFile path = fromPrim $ prim__nodeReadFile path
 
 route : AnyPtr -> List String -> IO ()
 route res ["", ""] = endRes res 200 "text/html" HTML_INDEX
-route res ["", "frontend.js"] = do
-    contents <- nodeReadFile FRONTEND_PATH
+route res ["", "quins-forum-frontend.js"] = do
+    contents <- nodeReadFile "quins-forum-frontend.js"
     if contents == "FILE_NOT_FOUND" then
-        endRes res 404 "text/plain" "" else endRes res 200 "text/javascript" contents
-route res _ = endRes res 404 "text/plain" ""
+        endRes res 404 "text/plain" "frontend file not found" else endRes res 200 "text/javascript" contents
+route res _ = endRes res 404 "text/plain" "invalid path"
 
 requestHandler : AnyPtr -> AnyPtr -> IO ()
 requestHandler request response = do
