@@ -32,6 +32,6 @@ The rendered spec:
 
 * [Install Artifact](https://github.com/vitiral/artifact/releases)
 * `art serve`
-* [http:localhost:5373](http:localhost:5373)
+* [http://localhost:5373](http://localhost:5373)
 
 The spec source documents: Check the `./design/` folder
