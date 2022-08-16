@@ -16,5 +16,6 @@ the low-level incremental update engine
 
 ## Principles
 
-* Clean up any redundant or stale data by pairing `add` with `remove`
-    quins wherever possible
+* Quins are stale and can be culled if a quin with the same element and attribute and a higher transaction number exists.
+* The `session` element has a special purpose - it will not be sent to
+    the server. When a `session` element changes
