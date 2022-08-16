@@ -39,6 +39,7 @@ dom = """
 public export
 runFrontend : IO ()
 runFrontend = do
+    spawnQuintuplet "0" "global" "genesis" "0" True
     putStrLn "hello to frontend"
     spawnQuintupletBind spawnQuintuplet
     setRootHtml dom
