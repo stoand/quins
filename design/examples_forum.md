@@ -27,16 +27,23 @@ PAGE_LOAD_ON: { session page home:index_body_id tx0 add }
 
 SPAWNS_ON_CLICK:
 
-* { session page home:index_body_id tx1 remove }
 * { session page posts:index_body_id tx1 add }
 
 ### Posts Page
 
 PAGE_LOAD_ON: { session page posts:index_body_id tx0 add }
 
-[[.create_post]]
+[[.create_post_section_toggle]]
 
-* { user id locally opens page `posts` } 
+SEND_ON_TOGGLE { session create_post_section_toggle enable tx0 `add/rm`  } 
+
+ACTION_ON_RECEIVE_TOGGLE - change send action from `add/rm` to `rm/add` or vice versa
+
+[[.create_post_section]]
+
+ACTION_ON_RECIEVE: { session create_post_toggle enable tx0 `add/rm`  } 
+
+show or hide depending on `add/rm`
 
 [[.update_post]]
 
