@@ -17,20 +17,22 @@ __Pages:__
 
 ### Index
 
-SPAWNS: { session page home:<index body id> <tx0> add }
+SPAWNS_ON_LOAD: { session page home:index_body_id tx0 add }
 
 ### Home Page
 
-ON: { session page home:<index body id> <tx0> add }
+PAGE_LOAD_ON: { session page home:index_body_id tx0 add }
 
-[[.open_forum]]
+[[.open_forum]] -- `Button`
 
-SPAWNS:
+SPAWNS_ON_CLICK:
 
-* { session page home:<index body id> <tx0> remove }
-* { session page posts:<index body id> <tx0> add }
+* { session page home:index_body_id tx1 remove }
+* { session page posts:index_body_id tx1 add }
 
 ### Posts Page
+
+PAGE_LOAD_ON: { session page posts:index_body_id tx0 add }
 
 [[.create_post]]
 
@@ -40,7 +42,7 @@ SPAWNS:
 
 [[.delete_post]]
 
-[[.display_posts]] -- a form of `Generic List`
+[[.display_posts]] -- `Generic List`
 
 [[.rate_post]]
 
@@ -52,7 +54,7 @@ SPAWNS:
 
 [[.delete_comment]]
 
-[[.display_comments]] -- a form of `Generic List`
+[[.display_comments]] -- `Generic List`
 
 [[.rate_comment]]
 
