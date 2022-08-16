@@ -13,7 +13,7 @@
 
 ## What are "Quins"?
 
-`Quins`, or quintuplets, are items in a list that together form a database
+`Quins`, or quintuplets, are tuples with five items in a list that together form a database
 of queryable data.
 
 The five items of a quintuplet item:
@@ -25,3 +25,12 @@ The five items of a quintuplet item:
 * `A/R` - add or remove
 
 See also: [A Datomic Database](https://docs.datomic.com/cloud/time/filters.html#example-database)
+
+## Detailed Project Reference
+
+The rendered spec:
+
+* [Install Artifact](https://github.com/vitiral/artifact/releases)
+* `art serve`
+
+The spec source documents: Check the `./design/` folder
