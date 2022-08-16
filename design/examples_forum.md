@@ -13,9 +13,28 @@ realistic proof of concept.
 The user signs in by entering any username.
 No email verification is needed.
 
-### Posts
+__Pages:__
+
+### Index
+
+SPAWNS: { session page home:<index body id> <tx0> add }
+
+### Home Page
+
+ON: { session page home:<index body id> <tx0> add }
+
+[[.open_forum]]
+
+SPAWNS:
+
+* { session page home:<index body id> <tx0> remove }
+* { session page posts:<index body id> <tx0> add }
+
+### Posts Page
 
 [[.create_post]]
+
+* { user id locally opens page `posts` } 
 
 [[.update_post]]
 
