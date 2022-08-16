@@ -49,6 +49,8 @@ endRes ptr response_code mime_type body = fromPrim $ prim__endRes ptr response_c
 
 nodeReadFileJs : String
 nodeReadFileJs = "javascript:lambda: (path) => {" ++
+    -- NOTE: no sanitizing paths in the format '../../secret' is needed
+    -- these urls are sanitized when nodejs parses the request
     "let fullPath = require('path').join(__dirname, path);" ++
     "try { return require('fs').readFileSync(fullPath, 'utf8') } catch(_err) { return 'FILE_NOT_FOUND'; } }"
 
@@ -58,20 +60,17 @@ prim__nodeReadFile : String -> PrimIO String
 nodeReadFile : String -> IO String
 nodeReadFile path = fromPrim $ prim__nodeReadFile path
 
-route : AnyPtr -> List String -> IO ()
-route res ["", ""] = endRes res 200 "text/html" HTML_INDEX
--- NOTE: supports only a single file name; no additional folders
-route res ["", static_file] = do
-    contents <- nodeReadFile static_file
+route : AnyPtr -> String -> IO ()
+route res "/" = endRes res 200 "text/html" HTML_INDEX
+route res file_path = do
+    contents <- nodeReadFile file_path
     if contents == "FILE_NOT_FOUND" then
-        endRes res 404 "text/plain" "singular file not found" else endRes res 200 (mimeForPath static_file) contents
-route res _ = endRes res 404 "text/plain" "paths containing folders are invalid - only singular files are allowed"
+        endRes res 404 "text/plain" "file not found" else endRes res 200 (mimeForPath file_path) contents
 
 requestHandler : AnyPtr -> AnyPtr -> IO ()
 requestHandler request response = do
     url <- getReqUrl request
-    putStrLn url
-    route response $ forget (Data.String.split (== '/') url)
+    route response url
     
 prim__requestHandler : AnyPtr -> AnyPtr -> PrimIO ()
 prim__requestHandler req res = toPrim $ requestHandler req res

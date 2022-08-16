@@ -22,7 +22,7 @@ spawnQuintupletBind spawnQuintuplet = primIO $ prim__spawnQuintupletBind spawnQu
 dom : String
 dom = """
 
-<link rel='stylesheet' href='styles.css'>
+<link rel='stylesheet' href='static/styles.css'>
 
 <div>asdf</div>
 
