@@ -14,3 +14,7 @@ the low-level incremental update engine
 
 
 
+## Principles
+
+* Clean up any redundant or stale data by pairing `add` with `remove`
+    quins wherever possible
