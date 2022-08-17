@@ -3,6 +3,7 @@ module QuinsFrontend
 %foreign "javascript:lambda: (val) => document.querySelector('#quins-app-root').innerHTML = val"
 prim__setRootHtml : String -> PrimIO ()
 
+public export
 setRootHtml : String -> IO ()
 setRootHtml html = fromPrim $ prim__setRootHtml html
 
