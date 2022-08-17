@@ -5,14 +5,6 @@ has in terms of features, as well as
 how the framework most efficiently can be built around this
 realistic proof of concept.
 
-
-## Features
-
-[[.sign_in]]
-
-The user signs in by entering any username.
-No email verification is needed.
-
 __Pages:__
 
 ### Index
@@ -23,11 +15,26 @@ SPAWNS_ON_LOAD: { session page home:index_body_id tx0 add }
 
 PAGE_LOAD_ON: { session page home:index_body_id tx0 add }
 
-[[.open_forum]] -- `Button`
+[[.sign_in]] -- `Form`
 
-SPAWNS_ON_CLICK:
+The user signs in by entering any username.
+No email verification is needed.
 
-* { session page posts:index_body_id tx1 add }
+ACTION_ON_SUBMIT:
+
+if exists { session sign_in existing_username _tx0 add } 
+
+then { session sign_in_err_dup_username show tx0 add }
+
+else
+    { session sign_in_err_dup_username show tx0 rm }
+    { session username username_val tx0 add } 
+    { session page posts:index_body_id tx0 add }
+
+[[.sign_in_err_dup_username]]
+
+visible depending on { session sign_in_err_dup_username show tx0 add }
+existing
 
 ### Posts Page
 
@@ -39,19 +46,36 @@ SEND_ON_TOGGLE { session create_post_section_toggle enable tx0 `add/rm`  }
 
 ACTION_ON_RECEIVE_TOGGLE - change send action from `add/rm` to `rm/add` or vice versa
 
-[[.create_post_section]]
+[[.create_post_section]] -- `Form`
 
-ACTION_ON_RECIEVE: { session create_post_toggle enable tx0 `add/rm`  } 
+CHANGES_VISIBILITY_ON: { session create_post_section_visible visible tx0 `add/rm`  } 
 
 show or hide depending on `add/rm`
 
-[[.update_post]]
 
-[[.delete_post]]
+Forum Fields: post_title post_body
+
+update fields on form submit with: { post_id create_post_field_post_(title/body) field_value tx0 add }
+
+validate fields on submit with: both cannot be empty; post_title with different post_id cannot exist
 
 [[.display_posts]] -- `Generic List`
 
-[[.rate_post]]
+Get list of post ids to display from { post_id create_post_field_title _value tx0 add }
+
+[[.post_item]]
+
+Takes post_id and retrieves { post_id create_post_field_post_(title/body) field_value tx0 add }
+
+<!-- TODO LATER
+
+[[.update_post]] -- `Form`
+
+[[.delete_post]] -- `Button`
+
+-->
+
+<!-- TODO LATER
 
 ### Comments
 
@@ -65,8 +89,10 @@ show or hide depending on `add/rm`
 
 [[.rate_comment]]
 
+-->
 
 ### Generic List
+
 
 Can be sorted by:
 
