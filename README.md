@@ -11,6 +11,11 @@
 * `./dev.sh`
 * Open `http://localhost:5000`
 
+## To Run Frontend Tests
+
+Same as above, except: `./dev.sh test-frontend`
+and do not open browser
+
 ## What are "Quins"?
 
 `Quins`, or quintuplets, are tuples with five items in a list that together form a database
